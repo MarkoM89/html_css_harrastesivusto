@@ -223,3 +223,18 @@ lapikaytavat.forEach((aihe) => {
 
 
 
+const aiheet = aihealue.map(aihe => aihe.replace(" ", "_"));
+
+
+aiheet.forEach(aihe => {
+
+    const element = document.getElementById(aihe + "_aihe");
+    element.onclick = () => {
+      
+      let alasivut = document.querySelectorAll(".ala_sivusto_" + aihe.toLowerCase());
+      
+      alasivut.forEach(alasivu => {
+        alasivu.style.display = alasivu.style.display === "block" ? "none" : "block";
+    });
+     }
+});
