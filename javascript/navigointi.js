@@ -1,15 +1,19 @@
 
 
 let aihealue = [
-    //"Pääsivu",
+    "Pääsivu",
     "Solar Jetman",
     "Animaatio",
     "Faxanadu",
-    //"Verkko"
+    "Verkko"
 ]
 
 let osoitteet_pääsivu = [
     "paasivu.html",
+]
+
+let sivut_pääsivu = [
+    "Paasivu"
 ]
 
 let osoitteet_solar = [
@@ -74,51 +78,13 @@ let osoitteet_verkko = [
     "/verkko/uusi_netti.html"
 ]
 
+let sivut_verkko = [
+    "Verkko"
+]
 
 
-
-
-//Luodaan pääsivun painike valikkoon
-
-let div_paasivu = document.createElement('div')
-div_paasivu.id = "paasivun_painike"
-div_paasivu.className = "muu_sivusto"
-
-let otsikko = document.createElement('h3')
-
-let a = document.createElement('a')
-let link = document.createTextNode('Pääsivu')
-
-a.appendChild(link)
-a.href = "paasivu.html"
-
-otsikko.appendChild(a)
-div_paasivu.appendChild(otsikko)
-
-const element = document.getElementById("navigointi");
-element.appendChild(div_paasivu);
-
-
-//Luodaan aihealueet muista sivuista valikkoon
-for(i = 0; i<aihealue.length; i++){
-    let div_otsikko = document.createElement('div')
-    div_otsikko.id = aihealue[i].replace(" ", "_") + "_aihe"
-
-    div_otsikko.className = "muu_sivusto"
-
-    
-    let otsikko = document.createElement('h3')
-    let aihe = document.createTextNode(aihealue[i])
-
-    otsikko.appendChild(aihe)
-    div_otsikko.appendChild(otsikko)
-    
-    const element = document.getElementById("navigointi");
-    element.appendChild(div_otsikko);
-
-}
-
-
+const lapikaytavat = [sivut_pääsivu, sivut_solar, sivut_animaatio, sivut_faxanadu, sivut_verkko ]
+const lapikaytavat_sivut = [osoitteet_pääsivu, osoitteet_solar, osoitteet_animaatio, osoitteet_faxanadu, osoitteet_verkko ]
 
 //Sijoitetaan sivustot eri aihealueille valikossa
 
@@ -127,84 +93,92 @@ let osa
 if (document.body.classList.contains("paasivu")){
     osa = "html"
 } else {
-    //Valikon pääsivu, kun jokin muu sivu on avattu
-    document.getElementById("paasivun_painike").children[0].children[0].href = "../../paasivu.html"
-
     //muut osat, sijainti on avatun sivuston juuri / sama kansio missä avattu sivu sijaitsee
     osa = ".."
 }
 
-
-const lapikaytavat = [sivut_solar, sivut_animaatio, sivut_faxanadu ]
-const lapikaytavat_sivut = [osoitteet_solar, osoitteet_animaatio, osoitteet_faxanadu ]
 
 lapikaytavat.forEach((sivut, indeksi) => {
+    
 
-    for(i = 0; i<sivut.length; i++){
+        if (sivut.length == 1){
 
-        let div = document.createElement('div');
-        div.id = sivut[i].replace(/\s/g, "_") + "_painike"
-        div.className = "ala_sivusto_" + aihealue[indeksi].replace(/\s/g, "_").toLowerCase()
-        let a = document.createElement('a');
-        let link = document.createTextNode(sivut[i]);
-        a.appendChild(link);
-        a.href = osa + lapikaytavat_sivut[indeksi][i];
-        div.appendChild(a)
-        const element = document.getElementById(aihealue[indeksi].replace(" ", "_") + "_aihe")
-        element.appendChild(div);
+            let div_paasivu = document.createElement('div')
+            div_paasivu.id = aihealue[indeksi].replace(" ", "_") + "_aihe"
+            div_paasivu.className = "muu_sivusto"
+
+            let otsikko = document.createElement('h3')
+
+            let a = document.createElement('a')
+            let link = document.createTextNode(aihealue[indeksi])
+
+            a.appendChild(link)
+
+            if (indeksi == 0 && document.body.classList.contains(lapikaytavat[0][0].replace(/\s/g, "_").toLowerCase())){
+                a.href = lapikaytavat_sivut[0][0];
+            } 
+            else if (indeksi == 0){
+                a.href = "../" + osa + "/" + lapikaytavat_sivut[0][0];
+            }
+            else{
+                a.href = osa + lapikaytavat_sivut[indeksi][0];
+            }
+            
+
+            otsikko.appendChild(a)
+            div_paasivu.appendChild(otsikko)
+
+            const element = document.getElementById("navigointi");
+            element.appendChild(div_paasivu);
+
+        }else{
+
+            let div_otsikko = document.createElement('div')
+            div_otsikko.id = aihealue[indeksi].replace(" ", "_") + "_aihe"
+
+            div_otsikko.className = "muu_sivusto"
+
+            
+            let otsikko = document.createElement('h3')
+            let aihe = document.createTextNode(aihealue[indeksi])
+
+            otsikko.appendChild(aihe)
+            div_otsikko.appendChild(otsikko)
+            
+            const element = document.getElementById("navigointi");
+            element.appendChild(div_otsikko);
+
+
+                for(i = 0; i<sivut.length; i++){
+
+                    let div = document.createElement('div');
+                    div.id = sivut[i].replace(/\s/g, "_") + "_painike"
+                    div.className = "ala_sivusto_" + aihealue[indeksi].replace(/\s/g, "_").toLowerCase()
+                    let a = document.createElement('a');
+                    let link = document.createTextNode(sivut[i]);
+                    a.appendChild(link);
+                    a.href = osa + lapikaytavat_sivut[indeksi][i];
+                    div.appendChild(a)
+                    const element = document.getElementById(aihealue[indeksi].replace(" ", "_") + "_aihe")
+                    element.appendChild(div);
         
-        
-    }
+                }
+        }
 })
-
-//Luodaan verkkopainike
-let div_verkko = document.createElement('div')
-div_verkko.id = "verkko_painike"
-div_verkko.className = "muu_sivusto"
-
-verko_otsikko= document.createElement('h3')
-
-a_verkko = document.createElement('a')
-link_verkko = document.createTextNode('Internetti')
-
-a_verkko.appendChild(link_verkko)
-
-
-if (document.body.classList.contains("paasivu")){
-    osa = "html"
-} else {
-    //muut osat, sijainti on avatun sivuston juuri / sama kansio missä avattu sivu sijaitsee
-    osa = ".."
-}
-
-a_verkko.href = osa + "/verkko/uusi_netti.html"
-
-verko_otsikko.appendChild(a_verkko)
-div_verkko.appendChild(verko_otsikko)
-
-let verkko_element = document.getElementById("navigointi");
-verkko_element.appendChild(div_verkko);
 
 
 
 // Päätetään minkä aihealueen alla ollaan ja annetaan "nykyinen" -luokka, joka tyylitetään CSS-tiedostossa, tuoden sen aihealueen otsikko esille muista
 //Tämä katsotaan bodyn class-nimestä, joka pitää täsmätä sen aihealueiden kanssa
-if (document.body.classList.contains("paasivu")){
-
-    div_paasivu.classList.add("nykyinen")
-}
 
 aihealue.forEach(aihe => {
     
-    if (document.body.classList.contains(aihe.replace(/\s/g, "_").toLowerCase())){
+    if (document.body.classList.contains(aihe.replace(/\s/g, "_").toLowerCase().replace(/ä/g, "a"))) {
         document.getElementById(aihe.replace(/\s/g, "_") + "_aihe").classList.add("nykyinen")
     }
 })
 
-if (document.body.classList.contains("tietoverkko")) {
-    div_verkko.classList.add("nykyinen")
 
-}
 
 
 
@@ -223,12 +197,14 @@ lapikaytavat.forEach((aihe) => {
 
 
 
+//Valikon alavalikkojen avaa sulje toiminto
 const aiheet = aihealue.map(aihe => aihe.replace(" ", "_"));
-
 
 aiheet.forEach(aihe => {
 
     const element = document.getElementById(aihe + "_aihe");
+
+    if(element !== null){
     element.onclick = () => {
       
       let alasivut = document.querySelectorAll(".ala_sivusto_" + aihe.toLowerCase());
@@ -237,4 +213,5 @@ aiheet.forEach(aihe => {
         alasivu.style.display = alasivu.style.display === "block" ? "none" : "block";
     });
      }
+    }
 });

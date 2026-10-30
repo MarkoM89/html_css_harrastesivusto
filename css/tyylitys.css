@@ -321,14 +321,14 @@ html, body {
 }
 
 
-.tietoverkko{
+.verkko{
     background-image: url("../kuvat/verkko.gif");
     background-size: cover;
     background-size: 100% 100%;
     color: aliceblue;
 }
 
-.tietoverkko > #navigointi > div > h3 > a {
+.verkko > #navigointi > div > h3 > a {
     color: aliceblue;
 }
 
